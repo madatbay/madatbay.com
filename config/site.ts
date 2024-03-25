@@ -7,14 +7,4 @@ export const siteConfig: SiteConfig = {
   keywords: ["python"],
   url: "https://madatbay.com",
   ogImage: "https://madatbay.com/og.jpg",
-  links: [
-    {
-      link: "https://github.com/shadcn/taxonomy",
-      icon: Github,
-    },
-    {
-      link: "https://twitter.com/madatbay",
-      icon: Twitter,
-    },
-  ],
 }

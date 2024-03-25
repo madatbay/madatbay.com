@@ -1,4 +1,4 @@
-import { LucideIcon } from "lucide-react"
+import type { SimpleIcon } from "simple-icons"
 
 export type SiteConfig = {
   title: string
@@ -6,8 +6,6 @@ export type SiteConfig = {
   keywords: string[]
   url: string
   ogImage: string
-  links: {
-    link: string
-    icon: LucideIcon
-  }[]
 }
+
+export type LinkConfig = Record<string, { link: string; icon: SimpleIcon }>
