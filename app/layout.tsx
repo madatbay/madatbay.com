@@ -57,7 +57,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "mx-auto my-6 min-h-screen max-w-6xl bg-background px-6 font-sans antialiased",
+          "mx-auto grid min-h-dvh max-w-6xl grid-rows-[auto_1fr_auto] bg-background px-6 font-sans antialiased",
           fontSans.variable
         )}
       >
@@ -68,7 +68,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          {children}
+          <main>{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

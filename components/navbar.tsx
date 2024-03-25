@@ -2,7 +2,7 @@ import Link from "next/link"
 
 export default function Navbar() {
   return (
-    <nav className="w-full rounded">
+    <nav className="py-6">
       <Link href="/">Madat Bayramov</Link>
     </nav>
   )
