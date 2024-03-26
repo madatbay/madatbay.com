@@ -1,3 +1,6 @@
+import { NavItem } from "@/types"
+
+// TODO: update siteconfig before publish
 export const siteConfig = {
   title: "Madat Bayramov",
   description: "Sharing my experience as a software engineer.",
@@ -9,3 +12,10 @@ export const siteConfig = {
     x: "https://twitter.com/madatbay",
   },
 }
+
+export const mainNavConfig: NavItem[] = [
+  {
+    title: "Blog",
+    href: "/blog",
+  },
+]

@@ -7,3 +7,9 @@ export type SkillConfig = {
 }
 
 export type LinkConfig = { link: string; icon: React.JSX }[]
+
+export type NavItem = {
+  title: string
+  href: string
+  disabled?: boolean
+}

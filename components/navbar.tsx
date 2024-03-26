@@ -1,5 +1,6 @@
 import { ModeToggle } from "@/components/mode-toggle"
 import Link from "next/link"
+import { MainNav } from "./main-nav"
 
 export default function Navbar() {
   return (
@@ -8,9 +9,10 @@ export default function Navbar() {
         <Link href="/" className="text-lg font-semibold tracking-tighter">
           Madat Bayramov
         </Link>
-        <nav className="space-x-2">
+        <div className="flex items-center gap-4">
+          <MainNav />
           <ModeToggle />
-        </nav>
+        </div>
       </div>
     </div>
   )
