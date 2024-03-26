@@ -5,11 +5,38 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import type { Metadata } from "next"
 import { Inter as FontSans } from "next/font/google"
+import localFont from "next/font/local"
 import "./globals.css"
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
+})
+
+const fontMono = localFont({
+  src: [
+    {
+      path: "../assets/fonts/CommitMono-400-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/CommitMono-400-Italic.otf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../assets/fonts/CommitMono-700-Regular.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/CommitMono-700-Italic.otf",
+      weight: "700",
+      style: "italic",
+    },
+  ],
+  variable: "--font-mono",
 })
 
 export const metadata: Metadata = {
@@ -56,7 +83,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={cn("bg-background font-sans antialiased", fontSans.variable)}
+        className={cn(
+          "bg-background font-sans antialiased",
+          fontSans.variable,
+          fontMono.variable
+        )}
       >
         <ThemeProvider
           attribute="class"
