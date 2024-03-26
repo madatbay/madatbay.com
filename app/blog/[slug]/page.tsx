@@ -1,7 +1,8 @@
-import { Post } from "@/components/posts/post"
+import { Markdown } from "@/components/markdown"
 import { getPost, getPosts } from "@/lib/posts"
-import Link from "next/link"
+import { MDXRemote } from "next-mdx-remote/rsc"
 import { notFound } from "next/navigation"
+import rehypePrettyCode, { type Options } from "rehype-pretty-code"
 
 export async function generateStaticParams() {
   const posts = await getPosts()
@@ -13,9 +14,21 @@ export default async function Page({ params }: { params: { slug: string } }) {
   if (!post) return notFound()
 
   return (
-    <div>
+    <div className="prose mx-auto dark:prose-invert">
       <h1>{post.title}</h1>
-      <Post>{post.body}</Post>
+      <MDXRemote
+        source={post.body}
+        options={{
+          mdxOptions: {
+            remarkPlugins: [],
+            rehypePlugins: [
+              // @ts-ignore
+              [rehypePrettyCode, { theme: "github-dark" } as Options],
+            ],
+          },
+        }}
+        components={Markdown}
+      />
     </div>
   )
 }

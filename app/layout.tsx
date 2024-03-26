@@ -97,7 +97,7 @@ export default function RootLayout({
         >
           <div className="mx-4 grid min-h-dvh grid-rows-[auto_1fr_auto] bg-background">
             <Navbar />
-            <main className="mx-auto w-full max-w-6xl border-x border-dashed px-4 pb-32 pt-16">
+            <main className="relative mx-auto w-full max-w-6xl border-x border-dashed px-4 pb-32 pt-16">
               {children}
             </main>
             <Footer />

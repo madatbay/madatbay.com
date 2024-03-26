@@ -1,5 +1,5 @@
 import { getPosts } from "@/lib/posts"
-import PostCard from "./posts/post-card"
+import PostCard from "./post-card"
 
 export default async function BlogSection() {
   const posts = await getPosts(4)

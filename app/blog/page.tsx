@@ -1,5 +1,5 @@
 import { HeroContent, HeroSection, HeroTitle } from "@/components/hero-section"
-import PostCard from "@/components/posts/post-card"
+import PostCard from "@/components/post-card"
 import { getPosts } from "@/lib/posts"
 
 export default async function Page() {
