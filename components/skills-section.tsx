@@ -28,7 +28,7 @@ export default function SkillsSection() {
         ))}
       </div>
       <p className="mb-2 mt-2 text-center font-mono text-sm tracking-wider text-muted-foreground">
-        Stack I&apos;m using during development
+        My development stack
       </p>
     </div>
   )
