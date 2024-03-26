@@ -1,13 +1,13 @@
+import { Icons } from "@/components/icons"
 import { LinkConfig } from "@/types"
-import { siGithub, siX } from "simple-icons"
 
-export const linkConfig: LinkConfig = {
-  github: {
-    link: "https://github.com/shadcn/taxonomy",
-    icon: siGithub,
+export const linkConfig: LinkConfig = [
+  {
+    link: "https://github.com/madatbay",
+    icon: Icons.gitHub,
   },
-  x: {
+  {
     link: "https://twitter.com/madatbay",
-    icon: siX,
+    icon: Icons.x,
   },
-}
+]

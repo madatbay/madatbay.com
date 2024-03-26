@@ -56,10 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={cn(
-          "mx-auto grid min-h-dvh max-w-6xl grid-rows-[auto_1fr_auto] bg-background px-6 font-sans antialiased",
-          fontSans.variable
-        )}
+        className={cn("bg-background font-sans antialiased", fontSans.variable)}
       >
         <ThemeProvider
           attribute="class"
@@ -67,9 +64,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <div className="mx-4 grid min-h-dvh grid-rows-[auto_1fr_auto] bg-background">
+            <Navbar />
+            <main className="mx-auto w-full max-w-6xl border-x border-dashed px-4 py-6">
+              {children}
+            </main>
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>
