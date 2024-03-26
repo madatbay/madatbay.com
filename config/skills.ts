@@ -11,6 +11,7 @@ export const skillsConfig: SkillConfig[] = [
       "Django",
       "Django Rest Framework",
       "FastAPI",
+      "GraphQL",
       "React.js",
       "Next.js",
       "TailwindCSS",
