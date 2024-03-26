@@ -9,6 +9,7 @@ import {
 import { Post } from "@/types/post"
 import { ArrowUpRight } from "lucide-react"
 import Link from "next/link"
+import { Button } from "./ui/button"
 
 export default function PostCard({ post }: { post: Post }) {
   return (
@@ -21,12 +22,12 @@ export default function PostCard({ post }: { post: Post }) {
       </CardContent>
       <CardFooter className="flex justify-between">
         <p className="text-sm">{post.date}</p>
-        <Link
-          href={`/blog/${post.slug}`}
-          className="flex items-center gap-1 underline underline-offset-4 transition-colors hover:text-primary"
-        >
-          Read more <ArrowUpRight className="size-4" />
-        </Link>
+        <Button variant="link" className="group pr-0" asChild>
+          <Link href={`/blog/${post.slug}`} className="group">
+            Read more
+            <ArrowUpRight className="ml-1 size-4 transition-transform group-hover:rotate-45" />
+          </Link>
+        </Button>
       </CardFooter>
     </Card>
   )
