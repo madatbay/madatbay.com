@@ -1,16 +1,41 @@
 import { Markdown } from "@/components/markdown"
 import { getPost, getPosts } from "@/lib/posts"
+import type { Metadata, ResolvingMetadata } from "next"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import { notFound } from "next/navigation"
 import rehypePrettyCode, { type Options } from "rehype-pretty-code"
+
+type Props = {
+  params: { slug: string }
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const slug = params.slug
+  const post = await getPost(slug)
+
+  if (!post) return notFound()
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || []
+
+  return {
+    title: post.title,
+    openGraph: {
+      images: [post.og, ...previousImages],
+    },
+  }
+}
 
 export async function generateStaticParams() {
   const posts = await getPosts()
   return posts.map((post) => ({ slug: post.slug }))
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug)
+export default async function Page({ params: { slug } }: Props) {
+  const post = await getPost(slug)
   if (!post) return notFound()
 
   return (

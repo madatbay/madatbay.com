@@ -1,6 +1,12 @@
 import { HeroContent, HeroSection, HeroTitle } from "@/components/hero-section"
 import PostCard from "@/components/post-card"
 import { getPosts } from "@/lib/posts"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Sharing my experience in blog posts",
+}
 
 export default async function Page() {
   const posts = await getPosts()
