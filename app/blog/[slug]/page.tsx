@@ -18,14 +18,8 @@ export async function generateMetadata(
 
   if (!post) return notFound()
 
-  // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || []
-
   return {
     title: post.title,
-    openGraph: {
-      images: [post.og, ...previousImages],
-    },
   }
 }
 
