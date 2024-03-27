@@ -27,4 +27,8 @@ export const mainNavConfig: NavItem[] = [
     title: "Blog",
     href: "/blog",
   },
+  {
+    title: "Links",
+    href: "/links",
+  },
 ]

@@ -12,7 +12,7 @@ export function MainNav() {
   const pathname = usePathname()
 
   return mainNavConfig.length ? (
-    <nav className="flex gap-6">
+    <nav className="flex gap-2">
       {mainNavConfig?.map((item, index) => (
         <Button
           key={index}
