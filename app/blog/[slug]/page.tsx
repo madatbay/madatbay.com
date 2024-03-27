@@ -1,7 +1,7 @@
 import { Markdown } from "@/components/markdown"
 import { siteConfig } from "@/config/site"
 import { getPost, getPosts } from "@/lib/posts"
-import type { Metadata, ResolvingMetadata } from "next"
+import type { Metadata } from "next"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import { notFound } from "next/navigation"
 import rehypePrettyCode, { type Options } from "rehype-pretty-code"
@@ -9,20 +9,6 @@ import rehypePrettyCode, { type Options } from "rehype-pretty-code"
 type Props = {
   params: { slug: string }
 }
-
-// export async function generateMetadata(
-//   { params }: Props,
-//   parent: ResolvingMetadata
-// ): Promise<Metadata> {
-//   const slug = params.slug
-//   const post = await getPost(slug)
-
-//   if (!post) return notFound()
-
-//   return {
-//     title: post.title,
-//   }
-// }
 
 export async function generateMetadata({
   params,

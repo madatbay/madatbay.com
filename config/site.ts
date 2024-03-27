@@ -1,10 +1,20 @@
 import { NavItem } from "@/types"
 
-// TODO: update siteconfig before publish
 export const siteConfig = {
   title: "Madat Bayramov",
-  description: "Sharing my experience as a software engineer.",
-  keywords: ["python"],
+  description:
+    "Explore the journey of an experienced software engineer, committed to delivering robust solutions and passionate about coding exploration. Discover insights and inspiration for your own projects.",
+  keywords: [
+    "python",
+    "django",
+    "next.js",
+    "graphql",
+    "tailwindcss",
+    "software development",
+    "deployments",
+    "case studies",
+    "technical blog",
+  ],
   url: "https://madatbay.vercel.app",
   links: {
     github: "https://github.com/madatbay",

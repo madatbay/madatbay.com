@@ -5,7 +5,8 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Sharing my experience in blog posts",
+  description:
+    "Read about my experience, case studies, solutions and experiments.",
 }
 
 export default async function Page() {
