@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl
   const postTitle = searchParams.get("title")
   const font = fetch(
-    new URL("../../assets/fonts/CommitMono-700-Regular.otf", import.meta.url)
+    new URL("../../assets/fonts/Inter-Bold.ttf", import.meta.url)
   ).then((res) => res.arrayBuffer())
   const fontData = await font
 
@@ -27,15 +27,15 @@ export async function GET(req: NextRequest) {
       >
         <div
           style={{
-            marginLeft: 190,
-            marginRight: 190,
+            marginLeft: 100,
+            marginRight: 100,
             display: "flex",
-            fontSize: 130,
+            fontSize: 80,
             fontFamily: "Commit Mono",
             letterSpacing: "-0.05em",
             fontStyle: "normal",
             color: "white",
-            lineHeight: "120px",
+            lineHeight: "80px",
             whiteSpace: "pre-wrap",
           }}
         >
