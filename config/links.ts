@@ -1,6 +1,5 @@
 import { Icons } from "@/components/icons"
 import { LinkConfig } from "@/types"
-import { BookText } from "lucide-react"
 
 export const linkConfig: Record<string, LinkConfig[]> = {
   personal: [
