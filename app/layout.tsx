@@ -46,13 +46,6 @@ export const metadata: Metadata = {
   },
   description: "Software engineer sharing his experience.",
   keywords: siteConfig.keywords,
-  authors: [
-    {
-      name: "Madat Bayramov",
-      url: "https://madatbay.com",
-    },
-  ],
-  creator: "Madat Bayramov",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -64,14 +57,17 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: siteConfig.title,
-    description: siteConfig.description,
-    images: [`${siteConfig.url}/og.jpg`],
-    creator: "Madat Bayramov",
   },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 }
 

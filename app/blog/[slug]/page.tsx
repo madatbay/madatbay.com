@@ -1,4 +1,5 @@
 import { Markdown } from "@/components/markdown"
+import { siteConfig } from "@/config/site"
 import { getPost, getPosts } from "@/lib/posts"
 import type { Metadata, ResolvingMetadata } from "next"
 import { MDXRemote } from "next-mdx-remote/rsc"
@@ -9,17 +10,54 @@ type Props = {
   params: { slug: string }
 }
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const slug = params.slug
-  const post = await getPost(slug)
+// export async function generateMetadata(
+//   { params }: Props,
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const slug = params.slug
+//   const post = await getPost(slug)
 
-  if (!post) return notFound()
+//   if (!post) return notFound()
+
+//   return {
+//     title: post.title,
+//   }
+// }
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata | undefined> {
+  const post = await getPost(params.slug)
+
+  if (!post) {
+    return
+  }
+
+  let { title, date: publishedTime, description } = post
+
+  let ogImage = `${siteConfig.url}/og?title=${title}`
 
   return {
-    title: post.title,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      publishedTime,
+      url: `${siteConfig.url}/blog/${post.slug}`,
+      images: [
+        {
+          url: ogImage,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
   }
 }
 
