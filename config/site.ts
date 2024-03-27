@@ -5,8 +5,7 @@ export const siteConfig = {
   title: "Madat Bayramov",
   description: "Sharing my experience as a software engineer.",
   keywords: ["python"],
-  url: "https://madatbay.com",
-  ogImage: "https://madatbay.com/og.jpg",
+  url: "https://madatbay.vercel.app",
   links: {
     github: "https://github.com/madatbay",
     x: "https://twitter.com/madatbay",
