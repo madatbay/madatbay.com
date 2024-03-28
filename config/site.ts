@@ -28,6 +28,11 @@ export const mainNavConfig: NavItem[] = [
     href: "/blog",
   },
   {
+    title: "Case studies",
+    href: "/case-studies",
+    disabled: true,
+  },
+  {
     title: "Links",
     href: "/links",
   },

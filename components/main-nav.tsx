@@ -17,15 +17,20 @@ export function MainNav() {
         <Button
           key={index}
           variant="link"
+          disabled={item.disabled}
+          aria-disabled={item.disabled}
           className={cn(
-            " transition-colors",
             pathname.startsWith(item.href) &&
-              "text-primary underline underline-offset-4",
-            item.disabled && "cursor-not-allowed opacity-80"
+              "text-primary underline underline-offset-4"
           )}
           asChild
         >
-          <Link href={item.disabled ? "#" : item.href}>{item.title}</Link>
+          <Link
+            href={item.disabled ? "#" : item.href}
+            aria-disabled={item.disabled}
+          >
+            {item.title}
+          </Link>
         </Button>
       ))}
     </nav>
