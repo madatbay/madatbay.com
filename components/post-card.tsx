@@ -21,7 +21,7 @@ export default function PostCard({ post }: { post: Post }) {
         <CardDescription>{post.description}</CardDescription>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <p className="text-sm">{post.date}</p>
+        <p className="font-mono text-xs">{post.date}</p>
         <Button variant="link" className="group pr-0" asChild>
           <Link href={`/blog/${post.slug}`} className="group">
             Read more
