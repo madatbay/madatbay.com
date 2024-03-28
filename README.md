@@ -25,7 +25,9 @@ npm run dev
 
 I'm keeping track of my upcoming features and bugs here. Serves as notebook to not forget, doesn't include all the features project has.
 
-- [ ] Responsiveness
+- **Features**
+  - [ ] code snippet copy button
+- **Responsiveness**
   - [x] Fix blog detail page x overflow
 
 ## License
