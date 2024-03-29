@@ -72,6 +72,7 @@ export default async function Page({ params: { slug } }: Props) {
         }}
         components={Markdown}
       />
+      <p className="text-right text-sm text-muted-foreground">{post.date}</p>
     </div>
   )
 }
