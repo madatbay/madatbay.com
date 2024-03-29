@@ -1,0 +1,293 @@
+---
+title: Deploy Django with Postgres, Nginx, and Gunicorn on Ubuntu 20.04 VPS
+description: Deploy Django with Postgres, Nginx, and Gunicorn on Ubuntu 20.04 VPS
+slug: deploy-django-with-postgres-nginx-and-gunicorn-on-ubuntu
+date: Mar 29, 2024
+---
+
+# Introduction
+
+What is Django? Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design. Built by experienced developers, it takes care of much of the hassle of Web development, so we can focus on writing your app without needing to reinvent the wheel.
+
+> It’s free and open source.
+
+If we develop our application with the help of Django, there is no need to run any 3rd party applications to run our project locally, Django comes with an embedded development server with nearly all features any developer needs during the development stage. Though when we try to deploy our application things are changing because the Django development server is not the proper choice for production because of security, performance.
+
+# Prerequisites
+
+We have to consider some tech stacks we are going to use during the Django deployment process.
+
+1. First of all, we are going to use Ubuntu 20.04 as our OS in VPS we'll as a web server. The best practice is using fresh OS and a user without `sudo` privileges.
+2. Gunicorn is a Python WSGI HTTP Server for UNIX that will be running behind `nginx` - the front-facing web server. NGINX takes a coming HTTP request and sends it to `gunicorn` server.
+3. NGINX is open-source software for web serving, reverse proxying, caching, load balancing, media streaming, and more. For now, we will only use it as a Web Server.
+4. Supervisor is a client/server system that allows its users to monitor and control several processes on UNIX-like operating systems. We will use `supervisor` to control our processes (`gunicorn`) without dealing with `rc.d` scripts.
+5. If we want to serve our server over HTTPS, we just need to use Certbot to provide a certificate for our server
+
+## Time to deploy
+
+### Launch VPS instance
+
+We need any type of VPS (AWS, GCP, Hetzner, etc.) with SSH, HTTP, HTTPS ports open to deploy our application on it. I won't go further on how to create VPS instances on some of these cloud services, because it's out of topic. But to put it briefly:
+
+1. I will start a new VPS instance with `Ubuntu 20.04`.
+2. Allow `SSH (22), HTTP (80), HTTPS (443)` ports. We'll be using ssh to connect our instance remotely and HTTP, HTTPS to serve web applications.
+3. I suggest using an SSH key to make our application more secure. To archive, in the instance launching step generate new key pair and simply download it.
+4. Connect to remote VPS instance with the help of an SSH key. To guaranty permissions of our ssh key for making a connection:
+
+```bash
+chmod 400 vpskey.pem
+```
+
+It's time to connect our VPS:
+
+```bash
+ssh -i "vpskey.pem" [vps_user]@[vps_ip]
+```
+
+**vps_user** - is a user that is created automatically or manually during VPS launch based on which cloud service you use.  
+**vps_ip** - is the public IP address of your VPS instance.
+
+Let's update and upgrade OS packages before starting our deployment:
+
+```bash
+sudo apt update
+sudo apt upgrade
+```
+
+### Deploy Django application with `gunicorn` and `supervisor`
+
+Firstly, we need to check if python3 is installed, else install it:
+
+```bash
+sudo python3 --version
+```
+
+Next, to have isolated space for our `python` projects we have to set up a virtual environment. With the help of `venv`, we'll be sure our programs have their of the set of dependencies
+
+```bash
+sudo apt install -y python3-venv
+python3 -m venv venv
+source activate venv/bin/activate
+```
+
+Now, let's clone our `Django` project from the remote git repository and install dependencies. _Note: You can use the same example Django application for deployment_
+
+```bash
+git clone https://github.com/madatbay/django-example
+cd django-example
+pip3 install -r requirements.txt
+```
+
+It's time to set up `gunicorn` and `supervisor` to run our Django app and manage it
+
+```bash
+pip3 install gunicorn
+sudo apt-get install supervisor
+```
+
+After successful installation, let's create a log file directory for `gunicorn` program we are going to write:
+
+```bash
+sudo mkdir /var/log/gunicorn
+```
+
+Later, we need to write our `gunicorn` program:
+
+```bash
+cd /etc/supervisor/conf.d/
+sudo vim gunicorn.conf
+sudo mkdir /var/log/gunicorn
+```
+
+Here is an example `gunicorn` program for this Django application:
+
+```config
+[program:gunicorn]
+directory=/home/ubuntu/django-example
+command=/home/ubuntu/venv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/django-example/app.sock core.wsgi:application
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/gunicorn/gunicorn.err.log
+stdout_logfile=/var/log/gunicorn/gunicorn.out.log
+[group:guni]
+programs:gunicorn
+```
+
+`/home/ubuntu/django-example` - the path of the Django application we are going to deploy. `core.wsgi:application` - `core` is base project folder `settings.py and wsgi.py` locates.
+
+As the last step, we only have to start our `supervisor` service:
+
+```bash
+sudo supervisorctl reread
+// output: guni:avaliable
+sudo supervisorctl update
+// output: guni:added process group
+sudo supervisorctl status
+// output: guni:gunicorn  Running pid 11219, uptime 0:00:01
+```
+
+### Set up and connect our app to Postgresql database
+
+For now, our application working correctly, but if you noticed we haven't run any migrations. Because we don't have any connected database for our application. Django uses the `sqlite3` database for development purposes, but it's not recommended database for production. We'll be configuring and use \`PostgreSQL for our Django application.
+
+Let's install all packages for `Postgresql`:
+
+```bash
+sudo apt install libpq-dev postgresql postgresql-contrib
+```
+
+`Postgresql` is now successfully installed, we just need to create our database and database user:
+
+```bash
+sudo -u postgres psql
+// Create db and db user
+postgres=# CREATE DATABASE sampledatabase;
+postgres=# CREATE USER dbuser WITH PASSWORD 'dbpass123';
+// After creating user we have to modify some connection parameters
+postgres=# ALTER ROLE dbuser SET client_encoding TO 'utf8';
+postgres=# ALTER ROLE dbuser SET default_transaction_isolation TO 'read committed';
+postgres=# ALTER ROLE dbuser SET timezone TO 'UTC';
+// Assign our user to database we just created
+postgres=# GRANT ALL PRIVILEGES ON DATABASE sampledatabase TO dbuser;
+postgres=# \q
+```
+
+Our database is ready to use, but if we didn't, we have to configure our Django application to use the database information we momentarily created. Default Django database engine uses sqlite3, but we want to change it to `PostgreSQL engine. We can do this simply using the` psycopg2\` package:
+
+```bash
+pip install psycopg2
+```
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'sampledatabase',
+        'USER': 'dbuser',         'PASSWORD': 'dbpass123',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+```
+
+The database is ready to go. Let's fire up the migrations:
+
+```bash
+python3 manage.py migrate
+```
+
+### Set up `NGINX` web server
+
+Okay, our application now working perfectly, but cannot access our application directly for now. In this step, `NGINX` comes to lend a helping hand to map our `gunicorn` program into web server requests. Let's start to install and configure the `NGiNX` web server:
+
+```bash
+sudo apt install nginx
+```
+
+If we want `nginx` to listen to our working `gunicorn` application, we have to do some simple configurations:
+
+1. Let's create a config file for our application to `nginx`:
+
+```bash
+cd /etc/nginx/sites-available/
+sudo vim django.conf
+```
+
+2. With the simple `nginx` config we can listen to our `gunicorn` application:
+
+```plaintext
+server{
+         listen 80;
+         server_name 192.168.1.1;
+          location / {
+            include proxy_params;
+            proxy_pass http://unix:/home/ubuntu/django-example/app.sock;
+            }
+         location /static {
+            autoindex on;
+            alias /home/ubuntu/django-example/static;
+         }
+}
+```
+
+Change `192.168.1.1` to your VPS public IP address and `/home/ubuntu/django-example/` to the directory of your application.
+
+We know that in production Django doesn't serve static files, so we need to configure `nginx` to serve static files too. Change `/home/ubuntu/django-example/static` to your `STATIC_ROOT` directory.
+
+If I remember correctly, we didn't collect our static files for the production environment.
+
+```bash
+python manage.py collectstatic
+```
+
+Next, we need to test our `nginx` configuration. If everything is in order, we are going to only create a symbolic link to connect our configuration file to the `sites-enabled` directory.
+
+```bash
+sudo nginx -t
+sudo ln django.conf /etc/nginx/sites-enabled/
+```
+
+Finally, restart the `nginx` service and check VPS public IP address:
+
+```bash
+sudo service nginx restart
+```
+
+### Connect custom domain to Django application
+
+Okay, that's good to hear our application is now accessible all over the web. But won't be easy to access our application using a custom domain like `teletubbies.com`?. I think, yes.
+
+Then let's configure a custom domain for our application. To achieve this, we need domain and DNS (like Route 53, Cloud DNS, etc). I won't cover specific DNS services of any cloud service like Route 53 because I don't want to get off the topic. To make it short:
+
+1. Create DNS zone for application
+2. Add your custom domain to the DNS zone.
+3. Provide domain name servers with DNS name servers. For example:
+
+```bash
+ns1-smt.com
+ns2-smt.com
+...
+```
+
+4. Create an `A` record to connect your VPS public IP address to the DNS.
+5. Add a custom domain to `ALLOWED_HOSTS` in your `settings.py` file
+6. You can now change `nginx` to listen to a custom domain instead of IP. But don't forget to test and restart `ngixn` after changing configurations.
+
+```bash
+server{
+    listen 80;
+    server_name studentassessment.xyz www.studentassessment.xyz;
+}
+```
+
+Now time to check if your custom domain is working.
+
+### Serve Django application with TSL (SSL)
+
+Providing HTTPS connection for applications is a greater advantage because in this way we are protecting our connection with a security certificate.
+
+As the last step, let's add a TSL certificate for our application:
+
+```bash
+sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository universe
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt update
+```
+
+After adding repositories, we have to install and set up certbot:
+
+```bash
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx
+```
+
+Later, to secure our server, just restart the server:
+
+```bash
+sudo supervisorctl reload
+sudo service nginx restart
+```
+
+At last, we have deployed our Django application with the help of `Gunicorn`, `supervisor`, `Nginx, and` PostgreSQL\` on Ubuntu 20.04
