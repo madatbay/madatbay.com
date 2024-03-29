@@ -1,0 +1,51 @@
+---
+title: What is Dependency Injection in Python?
+description: Simplify code maintenance with Dependency Injection in Python, passing dependencies into classes/functions for enhanced flexibility & testability
+slug: what-is-dependency-injection-in-python
+date: May 17, 2022
+---
+
+It's crucial to build modular, maintainable, and changeable software as a software engineer. For this purpose, several approaches, solutions, and patterns have been developed to ease and fasten the process. The primary solution is to lower coupling and increase cohesion in our code. But what do these two terms mean?
+
+- **Coupling** - a degree of independence between software modules. If the coupling is high - parts of the software are closely connected, it's hard to extend or modify modules within SOLID principles
+- **Cohesion** - a measure of modularity between modules; how easy to disassemble and assemble parts of the software. Higher cohesion means having much more flexible software.
+
+One of the most popular methods of having flexible software is _Dependency Injection_ which is quite famous for statically typed programming languages like Java. Usually, it's not popular in Python as other programming languages since it's a dynamically typed language. So there is plenty of flexibility has already been added with built-in features. Yet considering dependency injection while building software will increase modularity.
+
+## How to inject?
+
+Let's see _Dependency Injection_ in action. In this way, we'll see use cases and pros of having it
+
+Consider, we are building a simple payment gateway that is responsible to make a payment through a payment processor:
+
+```python
+class StripeProcessor:
+  def make_payment(self) -> None:
+    print("-> Payment made using Stripe ✅")
+
+
+class Payment:
+  def __init__(self) -> None:
+    self.processor = StripeProcessor() # dependency
+
+  def pay(self) -> None:
+    self.processor.make_payment()
+```
+
+We can create an instance of the `Payment` class and call the `.pay()` method with it. But if you take a closer look at the code, you'll see that we are initializing the processor in the constructor of the `Payment` class. What will happen if we want to add and switch between more payment processors as stripe? The answer is simple, every time we have to change the initializer of the `Payment` class. It means parts of our code are not flexible enough. But if you look at the updated code below:
+
+```python
+class StripeProcessor:
+  def make_payment(self) -> None:
+    print("-> Payment made using Stripe ✅")
+
+
+class Payment:
+  def __init__(self, processor: StripeProcessor) -> None: # dependency
+    self.processor = processor
+
+  def pay(self) -> None:
+    self.processor.make_payment()
+```
+
+As you see, we are _injecting_ dependency as a variable instead of hardcoding it in the constructor method. In this form, we can create multiple payment gateways by passing the payment processor as a variable. So, if we want to use another payment processor, we need to pass it as an argument instead of changing the code every time. By the way, hardcoding values and changing by hand means if we want to use another payment processor, we have to copy the `Payment` class with another name and hardcode again. If we have 10 payment processors, this means we'll have 10 duplicated code snippets. But why not have reusable ones with **Dependency Injection**?
