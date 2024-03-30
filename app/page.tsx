@@ -5,8 +5,6 @@ import { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Madat Bayramov | Software Engineer",
-  description:
-    "Software engineer writing about experience, case studies, solutions and experiments.",
 }
 
 export default function Home() {

@@ -3,7 +3,7 @@ import { NavItem } from "@/types"
 export const siteConfig = {
   title: "Madat Bayramov",
   description:
-    "Explore the journey of an experienced software engineer, committed to delivering robust solutions and passionate about coding exploration. Discover insights and inspiration for your own projects.",
+    "Software engineer writing about experience, case studies, solutions and experiments.",
   keywords: [
     "python",
     "django",
