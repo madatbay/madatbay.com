@@ -1,6 +1,13 @@
 import BlogSection from "@/components/blog-section"
 import { HeroContent, HeroSection, HeroTitle } from "@/components/hero-section"
 import SkillsSection from "@/components/skills-section"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Madat Bayramov | Software Engineer",
+  description:
+    "Software engineer writing about experience, case studies, solutions and experiments.",
+}
 
 export default function Home() {
   return (
