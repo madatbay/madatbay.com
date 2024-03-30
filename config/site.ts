@@ -15,7 +15,7 @@ export const siteConfig = {
     "case studies",
     "technical blog",
   ],
-  url: "https://madatbay.vercel.app",
+  url: "https://madatbay.com",
   links: {
     github: "https://github.com/madatbay",
     x: "https://twitter.com/madatbay",
