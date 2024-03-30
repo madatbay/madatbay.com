@@ -95,7 +95,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div
-            className="mx-4 grid min-h-dvh grid-rows-[auto_1fr_auto] bg-background"
+            className="grid min-h-dvh grid-rows-[auto_1fr_auto] bg-background"
             vaul-drawer-wrapper=""
           >
             <Navbar />

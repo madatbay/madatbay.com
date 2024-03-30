@@ -15,7 +15,8 @@ export default function Navbar() {
             <MainNav />
             <ModeToggle />
           </div>
-          <div className="sm:hidden">
+          <div className="flex items-center gap-4 sm:hidden">
+            <ModeToggle />
             <MobileNav />
           </div>
         </div>
