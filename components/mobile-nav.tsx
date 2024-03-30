@@ -17,7 +17,7 @@ export default function MobileNav() {
     <Drawer>
       <DrawerTrigger asChild>
         <Button size="icon" variant="ghost" asChild>
-          <Menu />
+          <Menu role="button" />
         </Button>
       </DrawerTrigger>
       <DrawerContent className="h-3/5">

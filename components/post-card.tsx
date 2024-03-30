@@ -25,6 +25,7 @@ export default function PostCard({ post }: { post: Post }) {
         <Button variant="link" className="group pr-0" asChild>
           <Link href={`/blog/${post.slug}`} className="group">
             Read more
+            <span className="sr-only">{post.title}</span>
             <ArrowUpRight className="ml-1 size-4 transition-transform group-hover:rotate-45" />
           </Link>
         </Button>

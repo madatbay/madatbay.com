@@ -9,7 +9,7 @@ export default async function BlogSection() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h3 className="mb-4 text-2xl font-medium">Experience Spot</h3>
+        <h2 className="mb-4 text-2xl font-medium">Latest blog posts</h2>
         <Button variant="link" className="group" asChild>
           <Link href="/blog">
             View all
