@@ -14,7 +14,7 @@ export default async function sitemap() {
     lastModified: formatPostDate(post.date),
   }))
 
-  let routes = ["", "/blog"].map((route) => ({
+  let routes = ["", "/blog", "/links"].map((route) => ({
     url: `${siteConfig.url}${route}`,
     lastModified: new Date().toISOString().split("T")[0],
   }))
