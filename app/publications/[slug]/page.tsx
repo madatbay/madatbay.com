@@ -13,13 +13,13 @@ type Props = {
 export async function generateMetadata({
   params,
 }: Props): Promise<Metadata | undefined> {
-  const post = await getContent("posts", params.slug)
+  const publication = await getContent("publications", params.slug)
 
-  if (!post) {
+  if (!publication) {
     return
   }
 
-  let { title, date: publishedTime, description } = post
+  let { title, date: publishedTime, description } = publication
 
   let ogImage = `${siteConfig.url}/og?title=${title}`
 
@@ -31,7 +31,7 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime,
-      url: `${siteConfig.url}/blog/${post.slug}`,
+      url: `${siteConfig.url}/blog/${publication.slug}`,
       images: [
         {
           url: ogImage,
@@ -48,19 +48,19 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const posts = await getContents("posts")
-  return posts.map((post) => ({ slug: post.slug }))
+  const publications = await getContents("publications")
+  return publications.map((publication) => ({ slug: publication.slug }))
 }
 
 export default async function Page({ params: { slug } }: Props) {
-  const post = await getContent("posts", slug)
-  if (!post) return notFound()
+  const publication = await getContent("publications", slug)
+  if (!publication) return notFound()
 
   return (
     <div className="prose mx-auto dark:prose-invert">
-      <h1>{post.title}</h1>
+      <h1 className="text-center">{publication.title}</h1>
       <MDXRemote
-        source={post.body}
+        source={publication.body}
         options={{
           mdxOptions: {
             remarkPlugins: [],
@@ -72,7 +72,6 @@ export default async function Page({ params: { slug } }: Props) {
         }}
         components={Markdown}
       />
-      <p className="text-right text-sm text-muted-foreground">{post.date}</p>
     </div>
   )
 }

@@ -11,11 +11,11 @@ export default function Navbar() {
           Madat Bayramov
         </Link>
         <div>
-          <div className="hidden items-center gap-4 sm:flex">
+          <div className="hidden items-center gap-1 sm:flex">
             <MainNav />
             <ModeToggle />
           </div>
-          <div className="flex items-center gap-4 sm:hidden">
+          <div className="flex items-center gap-1 sm:hidden">
             <ModeToggle />
             <MobileNav />
           </div>

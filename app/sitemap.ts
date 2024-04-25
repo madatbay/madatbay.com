@@ -1,5 +1,5 @@
 import { siteConfig } from "@/config/site"
-import { getPosts } from "@/lib/posts"
+import { getContents } from "@/lib/content"
 
 const formatPostDate = (dateStr: string) => {
   let date = new Date(dateStr)
@@ -9,15 +9,20 @@ const formatPostDate = (dateStr: string) => {
 }
 
 export default async function sitemap() {
-  let blogs = (await getPosts()).map((post) => ({
+  let blogs = (await getContents("posts")).map((post) => ({
     url: `${siteConfig.url}/blog/${post.slug}`,
-    lastModified: formatPostDate(post.date),
+    lastModified: formatPostDate(post.updatedAt),
   }))
 
-  let routes = ["", "/blog", "/links"].map((route) => ({
+  let publications = (await getContents("publications")).map((publication) => ({
+    url: `${siteConfig.url}/publications/${publication.slug}`,
+    lastModified: formatPostDate(publication.updatedAt),
+  }))
+
+  let routes = ["", "/blog", "/publications", "/links"].map((route) => ({
     url: `${siteConfig.url}${route}`,
     lastModified: new Date().toISOString().split("T")[0],
   }))
 
-  return [...routes, ...blogs]
+  return [...routes, ...blogs, ...publications]
 }

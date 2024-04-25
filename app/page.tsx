@@ -1,5 +1,6 @@
 import BlogSection from "@/components/blog-section"
 import { HeroContent, HeroSection, HeroTitle } from "@/components/hero-section"
+import PublicationsSection from "@/components/publications-section"
 import SkillsSection from "@/components/skills-section"
 import { Metadata } from "next"
 
@@ -25,6 +26,7 @@ export default function Home() {
       </HeroSection>
       <SkillsSection />
       <BlogSection />
+      <PublicationsSection />
     </div>
   )
 }

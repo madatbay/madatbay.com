@@ -1,11 +1,11 @@
-import { getPosts } from "@/lib/posts"
+import { getContents } from "@/lib/content"
 import { ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 import PostCard from "./post-card"
 import { Button } from "./ui/button"
 
 export default async function BlogSection() {
-  const posts = await getPosts(4)
+  const posts = await getContents("posts", 4)
   return (
     <div>
       <div className="flex items-center justify-between">

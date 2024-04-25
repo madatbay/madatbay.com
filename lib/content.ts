@@ -1,20 +1,22 @@
-import { Post } from "@/types/post"
+import { BaseContent, Post } from "@/types/content"
 import fs from "fs/promises"
 import matter from "gray-matter"
 import path from "path"
 
-export async function getPosts(limit: number = Infinity) {
-  const posts = await fs.readdir("./content/posts/")
+type ContentType = "posts" | "publications"
+
+export async function getContents(type: ContentType, limit: number = Infinity) {
+  const posts = await fs.readdir(`./content/${type}/`)
 
   let sortedPosts = await Promise.all(
     posts
       .filter((file) => path.extname(file) === ".mdx")
       .map(async (file) => {
-        const filePath = `./content/posts/${file}`
+        const filePath = `./content/${type}/${file}`
         const fileContent = await fs.readFile(filePath, "utf8")
         const { data, content } = matter(fileContent)
 
-        return { ...data, body: content } as Post
+        return { ...data, body: content } as BaseContent
       })
   )
   sortedPosts = sortedPosts.sort(
@@ -28,7 +30,7 @@ export async function getPosts(limit: number = Infinity) {
   return sortedPosts
 }
 
-export async function getPost(slug: string) {
-  const posts = await getPosts()
+export async function getContent(type: ContentType, slug: string) {
+  const posts = await getContents(type)
   return posts.find((post) => post.slug === slug)
 }
