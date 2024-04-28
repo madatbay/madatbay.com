@@ -9,6 +9,8 @@ export interface BaseContent {
 
 export interface Post extends BaseContent {}
 
+export interface CaseStudy extends BaseContent {}
+
 export interface Publication extends BaseContent {
   type: "Article"
 }

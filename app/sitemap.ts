@@ -14,15 +14,22 @@ export default async function sitemap() {
     lastModified: formatPostDate(post.updatedAt),
   }))
 
+  let caseStudies = (await getContents("case-studies")).map((caseStudy) => ({
+    url: `${siteConfig.url}/case-studies/${caseStudy.slug}`,
+    lastModified: formatPostDate(caseStudy.updatedAt),
+  }))
+
   let publications = (await getContents("publications")).map((publication) => ({
     url: `${siteConfig.url}/publications/${publication.slug}`,
     lastModified: formatPostDate(publication.updatedAt),
   }))
 
-  let routes = ["", "/blog", "/publications", "/links"].map((route) => ({
-    url: `${siteConfig.url}${route}`,
-    lastModified: new Date().toISOString().split("T")[0],
-  }))
+  let routes = ["", "/blog", "/case-studies", "/publications", "/links"].map(
+    (route) => ({
+      url: `${siteConfig.url}${route}`,
+      lastModified: new Date().toISOString().split("T")[0],
+    })
+  )
 
-  return [...routes, ...blogs, ...publications]
+  return [...routes, ...blogs, ...caseStudies, ...publications]
 }

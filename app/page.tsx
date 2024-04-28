@@ -1,4 +1,5 @@
 import BlogSection from "@/components/blog-section"
+import CaseStudiesSection from "@/components/case-studies-section"
 import { HeroContent, HeroSection, HeroTitle } from "@/components/hero-section"
 import PublicationsSection from "@/components/publications-section"
 import SkillsSection from "@/components/skills-section"
@@ -26,6 +27,7 @@ export default function Home() {
       </HeroSection>
       <SkillsSection />
       <BlogSection />
+      <CaseStudiesSection />
       <PublicationsSection />
     </div>
   )

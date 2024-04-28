@@ -3,7 +3,7 @@ import fs from "fs/promises"
 import matter from "gray-matter"
 import path from "path"
 
-type ContentType = "posts" | "publications"
+type ContentType = "posts" | "case-studies" | "publications"
 
 export async function getContents(type: ContentType, limit: number = Infinity) {
   const posts = await fs.readdir(`./content/${type}/`)
