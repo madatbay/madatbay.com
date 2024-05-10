@@ -1,9 +1,12 @@
+import { Icons } from "@/components/icons"
 import { Markdown } from "@/components/markdown"
+import { Button } from "@/components/ui/button"
 import { siteConfig } from "@/config/site"
 import { getContent, getContents } from "@/lib/content"
 import type { Metadata } from "next"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import { notFound } from "next/navigation"
+import Script from "next/script"
 import rehypePrettyCode, { type Options } from "rehype-pretty-code"
 
 type Props = {
@@ -72,9 +75,20 @@ export default async function Page({ params: { slug } }: Props) {
         }}
         components={Markdown}
       />
-      <p className="text-right text-sm text-muted-foreground">
-        {caseStudy.date}
-      </p>
+      <div className="flex items-center justify-between">
+        <p className="text-right text-sm text-muted-foreground">
+          {caseStudy.date}
+        </p>
+        <a
+          href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+          className="twitter-share-button"
+          data-size="large"
+          data-via="madatbay"
+          data-dnt="true"
+          data-show-count="false"
+        ></a>
+      </div>
+      <Script async src="https://platform.twitter.com/widgets.js"></Script>
     </div>
   )
 }
