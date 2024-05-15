@@ -7,7 +7,6 @@ import { GoogleTagManager } from "@next/third-parties/google"
 import type { Metadata } from "next"
 import { Inter as FontSans } from "next/font/google"
 import localFont from "next/font/local"
-import Script from "next/script"
 import "./globals.css"
 
 const fontSans = FontSans({
@@ -106,11 +105,6 @@ export default function RootLayout({
             <Footer />
           </div>
         </ThemeProvider>
-        <Script
-          type="text/javascript"
-          src="https://cdn.seojuice.io/suggestions.v1.js"
-          defer
-        ></Script>
       </body>
     </html>
   )
