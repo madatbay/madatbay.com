@@ -1,5 +1,4 @@
 import { siteConfig } from "@/config/site"
-import Script from "next/script"
 import { Icons } from "./icons"
 import { Button } from "./ui/button"
 
@@ -20,11 +19,11 @@ export default function Footer() {
           </a>
         </Button>
       </div>
-      <Script
+      <script
         type="text/javascript"
         src="https://cdn.seojuice.io/suggestions.v1.js"
         defer
-      ></Script>
+      ></script>
     </footer>
   )
 }
