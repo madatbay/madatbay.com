@@ -3,8 +3,11 @@ import { Badge } from "./ui/badge"
 
 export default function SkillsSection() {
   return (
-    <div>
-      <div className="grid grid-cols-2  border border-dashed sm:grid-cols-4 lg:grid-cols-6">
+    <div className="space-y-2">
+      <p className="font-mono text-sm tracking-wider text-muted-foreground">
+        My development stack
+      </p>
+      <div className="grid grid-cols-2  border border-dashed sm:grid-cols-3 lg:grid-cols-5">
         {skillsConfig.map((skill) => (
           <div
             key={skill.category}
@@ -27,9 +30,6 @@ export default function SkillsSection() {
           </div>
         ))}
       </div>
-      <p className="mt-2 text-center font-mono text-sm tracking-wider text-muted-foreground">
-        My development stack
-      </p>
     </div>
   )
 }

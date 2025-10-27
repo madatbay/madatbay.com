@@ -22,11 +22,7 @@ export const skillsConfig: SkillConfig[] = [
     skills: ["GCP", "AWS", "Hetzner"],
   },
   {
-    category: "Version control",
-    skills: ["Git", "GitHub", "BitBucket"],
-  },
-  {
-    category: "Deployment",
+    category: "CI/CD",
     skills: [
       "Nginx",
       "Github Actions",
