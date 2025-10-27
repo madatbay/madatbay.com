@@ -1,16 +1,22 @@
-export interface BaseContent {
-  title: string
+import keystatic from "@/lib/keystatic"
+
+export type CollectionReader = typeof keystatic.collections
+
+export type InferCollectionEntries<T extends keyof CollectionReader> = Awaited<
+  ReturnType<CollectionReader[T]["all"]>
+>[number]["entry"]
+
+export type InferCollectionEntry<T extends keyof CollectionReader> = Awaited<
+  ReturnType<CollectionReader[T]["read"]>
+>
+export type Post = InferCollectionEntries<"posts"> & {
   slug: string
-  description: string
-  date: string
-  updatedAt: string
-  body: string
 }
 
-export interface Post extends BaseContent {}
+export type CaseStudy = InferCollectionEntries<"caseStudies"> & {
+  slug: string
+}
 
-export interface CaseStudy extends BaseContent {}
-
-export interface Publication extends BaseContent {
-  type: "Article"
+export type Publication = InferCollectionEntries<"publications"> & {
+  slug: string
 }

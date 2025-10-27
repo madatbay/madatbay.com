@@ -15,14 +15,13 @@ export default function Home() {
       <HeroSection>
         <HeroTitle>Software Engineer.</HeroTitle>
         <HeroContent>
-          As a seasoned software engineer with five years of diverse experience,
-          I am currently dedicated to delivering robust solutions at a reputable
-          Swiss company. Additionally, I hold the position of CTO at a startup,
-          leveraging my expertise to drive dynamic ventures. Over the years,
-          I&apos;ve been CTO at multiple startups, broadening my entrepreneurial
-          insight. Beyond professional pursuits, I derive immense satisfaction
-          from delving into coding exploration and pursuing side projects during
-          my leisure hours.
+          As a software engineer based in Switzerland, I specialize in backend
+          development with a keen interest in designing scalable architectures
+          and ensuring system reliability. While backend development is my
+          primary focus, I am also adept in frontend technologies, tooling, and
+          infrastructure, all aimed at enhancing software quality. I am
+          consistently driven to explore and master new technologies, striving
+          to streamline and optimize the development process.
         </HeroContent>
       </HeroSection>
       <SkillsSection />

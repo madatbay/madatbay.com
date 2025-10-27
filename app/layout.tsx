@@ -7,7 +7,7 @@ import { GoogleTagManager } from "@next/third-parties/google"
 import type { Metadata } from "next"
 import { Inter as FontSans } from "next/font/google"
 import localFont from "next/font/local"
-import "./globals.css"
+import "@/app/globals.css"
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -83,16 +83,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div
-            className="grid min-h-dvh grid-rows-[auto_1fr_auto] bg-background"
-            vaul-drawer-wrapper=""
-          >
-            <Navbar />
-            <main className="relative mx-auto w-full max-w-6xl border-x border-dashed px-4 pb-32 pt-16">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>

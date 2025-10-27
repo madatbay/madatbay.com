@@ -1,12 +1,11 @@
-import { getContents } from "@/lib/content"
-import { Publication } from "@/types/content"
 import { ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 import PublicationCard from "./publication-card"
 import { Button } from "./ui/button"
+import { getCollectionEntries } from "@/lib/queries"
 
 export default async function PublicationsSection() {
-  const publications = (await getContents("publications", 3)) as Publication[]
+  const publications = await getCollectionEntries("publications", 3)
   return (
     <div>
       <div className="flex items-center justify-between">

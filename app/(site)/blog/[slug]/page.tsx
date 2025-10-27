@@ -1,11 +1,11 @@
 import { Markdown } from "@/components/markdown"
 import { siteConfig } from "@/config/site"
-import { getContent, getContents } from "@/lib/content"
+import keystatic from "@/lib/keystatic"
 import type { Metadata } from "next"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import { notFound } from "next/navigation"
 import Script from "next/script"
-import rehypePrettyCode, { type Options } from "rehype-pretty-code"
+import rehypePrettyCode from "rehype-pretty-code"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -13,39 +13,39 @@ export async function generateMetadata(
   props: Props
 ): Promise<Metadata | undefined> {
   const params = await props.params
-  const post = await getContent("posts", params.slug)
+  const post = await keystatic.collections.posts.read(params.slug)
 
   if (!post) {
     return
   }
 
-  let { title, date: publishedTime, description } = post
+  const { title, date: publishedTime, excerpt } = post
 
-  let ogImage = `${siteConfig.url}/og?title=${title}`
+  const ogImage = `${siteConfig.url}/og?title=${title}`
 
   return {
     title,
-    description,
+    description: excerpt,
     openGraph: {
       title,
-      description,
+      description: excerpt,
       type: "article",
-      publishedTime,
-      url: `${siteConfig.url}/blog/${post.slug}`,
+      publishedTime: publishedTime ?? undefined,
+      url: `${siteConfig.url}/blog/${params.slug}`,
       images: [{ url: ogImage }],
     },
     twitter: {
       card: "summary_large_image",
       title,
-      description,
+      description: excerpt,
       images: [ogImage],
     },
   }
 }
 
 export async function generateStaticParams() {
-  const posts = await getContents("posts")
-  return posts.map((post) => ({ slug: post.slug }))
+  const posts = await keystatic.collections.posts.list()
+  return posts.map((slug) => ({ slug }))
 }
 
 export default async function Page(props: Props) {
@@ -53,21 +53,18 @@ export default async function Page(props: Props) {
 
   const { slug } = params
 
-  const post = await getContent("posts", slug)
+  const post = await keystatic.collections.posts.read(slug)
   if (!post) return notFound()
 
   return (
     <div className="prose mx-auto dark:prose-invert">
       <h1>{post.title}</h1>
       <MDXRemote
-        source={post.body}
+        source={await post.content()}
         options={{
           mdxOptions: {
             remarkPlugins: [],
-            rehypePlugins: [
-              // @ts-ignore
-              [rehypePrettyCode, { theme: "github-dark" } as Options],
-            ],
+            rehypePlugins: [[rehypePrettyCode, { theme: "github-dark" }]],
           },
         }}
         components={Markdown}

@@ -1,12 +1,15 @@
-import { getContents } from "@/lib/content"
-import { CaseStudy } from "@/types/content"
 import { ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 import CaseStudyCard from "./case-study-card"
 import { Button } from "./ui/button"
+import { getCollectionEntries } from "@/lib/queries"
 
 export default async function CaseStudiesSection() {
-  const caseStudies = (await getContents("case-studies", 4)) as CaseStudy[]
+  const caseStudies = await getCollectionEntries<"caseStudies">(
+    "caseStudies",
+    4
+  )
+
   return (
     <div>
       <div className="flex items-center justify-between">

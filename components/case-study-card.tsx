@@ -13,17 +13,22 @@ import { Button } from "./ui/button"
 
 export default function CaseStudyCard({ caseStudy }: { caseStudy: CaseStudy }) {
   return (
-    <Card className="row-span-3 grid grid-rows-subgrid">
+    <Card className="group relative row-span-3 grid grid-rows-subgrid">
       <CardHeader className="pb-0">
-        <CardTitle className="leading-tight">{caseStudy.title}</CardTitle>
+        <CardTitle className="leading-tight transition-colors group-hover:text-primary">
+          {caseStudy.title}
+        </CardTitle>
       </CardHeader>
       <CardContent className="pb-0">
-        <CardDescription>{caseStudy.description}</CardDescription>
+        <CardDescription>{caseStudy.excerpt}</CardDescription>
       </CardContent>
       <CardFooter className="flex justify-between">
         <p className="font-mono text-xs">{caseStudy.date}</p>
         <Button variant="link" className="group pr-0" asChild>
-          <Link href={`/case-studies/${caseStudy.slug}`} className="group">
+          <Link
+            href={`/case-studies/${caseStudy.slug}`}
+            className="after:absolute after:inset-0"
+          >
             Read more
             <span className="sr-only">{caseStudy.title}</span>
             <ArrowUpRight className="ml-1 size-4 transition-transform group-hover:rotate-45" />

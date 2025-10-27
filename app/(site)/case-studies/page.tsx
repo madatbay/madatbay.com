@@ -1,6 +1,6 @@
 import CaseStudyCard from "@/components/case-study-card"
 import { HeroContent, HeroSection, HeroTitle } from "@/components/hero-section"
-import { getContents } from "@/lib/content"
+import { getCollectionEntries } from "@/lib/queries"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const caseStudies = await getContents("case-studies")
+  const caseStudies = await getCollectionEntries("caseStudies", 4)
 
   return (
     <div className="space-y-8">

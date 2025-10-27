@@ -1,6 +1,6 @@
 import { HeroContent, HeroSection, HeroTitle } from "@/components/hero-section"
 import PostCard from "@/components/post-card"
-import { getContents } from "@/lib/content"
+import { getCollectionEntries } from "@/lib/queries"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const posts = await getContents("posts")
+  const posts = await getCollectionEntries("posts", 4)
 
   return (
     <div className="space-y-8">

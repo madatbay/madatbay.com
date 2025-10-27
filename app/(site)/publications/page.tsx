@@ -1,7 +1,7 @@
 import { HeroContent, HeroSection, HeroTitle } from "@/components/hero-section"
 import PublicationCard from "@/components/publication-card"
-import { getContents } from "@/lib/content"
-import { Publication } from "@/types/content"
+import { getCollectionEntries } from "@/lib/queries"
+
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const publications = (await getContents("publications")) as Publication[]
+  const publications = await getCollectionEntries("publications", 4)
 
   return (
     <div className="space-y-8">

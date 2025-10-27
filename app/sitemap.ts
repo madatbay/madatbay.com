@@ -1,5 +1,5 @@
 import { siteConfig } from "@/config/site"
-import { getContents } from "@/lib/content"
+import { getCollectionEntries } from "@/lib/queries"
 
 const formatPostDate = (dateStr: string) => {
   let date = new Date(dateStr)
@@ -9,22 +9,30 @@ const formatPostDate = (dateStr: string) => {
 }
 
 export default async function sitemap() {
-  let blogs = (await getContents("posts")).map((post) => ({
+  const blogs = (await getCollectionEntries("posts")).map((post) => ({
     url: `${siteConfig.url}/blog/${post.slug}`,
-    lastModified: formatPostDate(post.updatedAt),
+    lastModified: formatPostDate(post.updatedAt ?? new Date().toISOString()),
   }))
 
-  let caseStudies = (await getContents("case-studies")).map((caseStudy) => ({
-    url: `${siteConfig.url}/case-studies/${caseStudy.slug}`,
-    lastModified: formatPostDate(caseStudy.updatedAt),
-  }))
+  const caseStudies = (await getCollectionEntries("caseStudies")).map(
+    (caseStudy) => ({
+      url: `${siteConfig.url}/case-studies/${caseStudy.slug}`,
+      lastModified: formatPostDate(
+        caseStudy.updatedAt ?? new Date().toISOString()
+      ),
+    })
+  )
 
-  let publications = (await getContents("publications")).map((publication) => ({
-    url: `${siteConfig.url}/publications/${publication.slug}`,
-    lastModified: formatPostDate(publication.updatedAt),
-  }))
+  const publications = (await getCollectionEntries("publications")).map(
+    (publication) => ({
+      url: `${siteConfig.url}/publications/${publication.slug}`,
+      lastModified: formatPostDate(
+        publication.updatedAt ?? new Date().toISOString()
+      ),
+    })
+  )
 
-  let routes = ["", "/blog", "/case-studies", "/publications", "/links"].map(
+  const routes = ["", "/blog", "/case-studies", "/publications", "/links"].map(
     (route) => ({
       url: `${siteConfig.url}${route}`,
       lastModified: new Date().toISOString().split("T")[0],
