@@ -1,5 +1,4 @@
 import { config, fields, collection } from "@keystatic/core"
-import { createReader } from "@keystatic/core/reader"
 
 export default config({
   storage: { kind: "local" },
@@ -51,7 +50,10 @@ export default config({
         }),
         type: fields.select({
           label: "Type",
-          options: [{ label: "Article", value: "Article" }],
+          options: [
+            { label: "Article", value: "Article" },
+            { label: "Dissertation", value: "Dissertation" },
+          ],
           defaultValue: "Article",
         }),
         content: fields.mdx({ label: "Content" }),
