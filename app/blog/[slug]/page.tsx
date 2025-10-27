@@ -7,13 +7,12 @@ import { notFound } from "next/navigation"
 import Script from "next/script"
 import rehypePrettyCode, { type Options } from "rehype-pretty-code"
 
-type Props = {
-  params: { slug: string }
-}
+type Props = { params: Promise<{ slug: string }> }
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata | undefined> {
+export async function generateMetadata(
+  props: Props
+): Promise<Metadata | undefined> {
+  const params = await props.params
   const post = await getContent("posts", params.slug)
 
   if (!post) {
@@ -33,11 +32,7 @@ export async function generateMetadata({
       type: "article",
       publishedTime,
       url: `${siteConfig.url}/blog/${post.slug}`,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
+      images: [{ url: ogImage }],
     },
     twitter: {
       card: "summary_large_image",
@@ -53,7 +48,11 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }))
 }
 
-export default async function Page({ params: { slug } }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params
+
+  const { slug } = params
+
   const post = await getContent("posts", slug)
   if (!post) return notFound()
 

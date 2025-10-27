@@ -9,10 +9,7 @@ import { Inter as FontSans } from "next/font/google"
 import localFont from "next/font/local"
 import "./globals.css"
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-})
+const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" })
 
 const fontMono = localFont({
   src: [
@@ -42,10 +39,7 @@ const fontMono = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: {
-    default: siteConfig.title,
-    template: `%s | ${siteConfig.title}`,
-  },
+  title: { default: siteConfig.title, template: `%s | ${siteConfig.title}` },
   description: siteConfig.description,
   keywords: siteConfig.keywords,
   openGraph: {
@@ -56,10 +50,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: siteConfig.title,
-  },
+  twitter: { card: "summary_large_image", title: siteConfig.title },
   robots: {
     index: true,
     follow: true,
@@ -75,9 +66,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <GoogleTagManager gtmId="GTM-THNCQKCH" />

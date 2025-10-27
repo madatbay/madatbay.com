@@ -8,12 +8,11 @@ import Script from "next/script"
 import rehypePrettyCode, { type Options } from "rehype-pretty-code"
 
 type Props = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata | undefined> {
+export async function generateMetadata(props: Props): Promise<Metadata | undefined> {
+  const params = await props.params;
   const publication = await getContent("publications", params.slug)
 
   if (!publication) {
@@ -53,7 +52,13 @@ export async function generateStaticParams() {
   return publications.map((publication) => ({ slug: publication.slug }))
 }
 
-export default async function Page({ params: { slug } }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
+
+  const {
+    slug
+  } = params;
+
   const publication = await getContent("publications", slug)
   if (!publication) return notFound()
 
