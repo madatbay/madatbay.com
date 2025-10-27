@@ -15,13 +15,14 @@ export default function Home() {
       <HeroSection>
         <HeroTitle>Software Engineer.</HeroTitle>
         <HeroContent>
-          As a software engineer based in Switzerland, I specialize in backend
-          development with a keen interest in designing scalable architectures
-          and ensuring system reliability. While backend development is my
-          primary focus, I am also adept in frontend technologies, tooling, and
-          infrastructure, all aimed at enhancing software quality. I am
-          consistently driven to explore and master new technologies, striving
-          to streamline and optimize the development process.
+          As a software engineer working at one of Swiss companies, I specialize
+          in backend development with a keen interest in designing scalable
+          architectures and ensuring system reliability. While backend
+          development is my primary focus, I am also adept in frontend
+          technologies, tooling, and infrastructure, all aimed at enhancing
+          software quality. I am consistently driven to explore and master new
+          technologies, striving to streamline and optimize the development
+          process.
         </HeroContent>
       </HeroSection>
       <SkillsSection />
