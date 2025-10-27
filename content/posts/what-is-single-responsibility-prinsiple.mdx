@@ -1,0 +1,85 @@
+---
+title: What is Single Responsibility principle?
+excerpt: >-
+  A practical introduction to the Single Responsibility Principle (SRP) with a
+  simple before/after refactor example showing how separating concerns makes
+  your code easier to maintain and extend.
+date: 2025-10-27
+updatedAt: 2025-10-27
+---
+## The Single Responsibility Principle (SRP) — Simple but Powerful
+
+Starting from this post, I’ll be breaking down each of the SOLID principles one by one. Let’s begin with the first one — the **Single Responsibility Principle (SRP)**.
+
+SRP says:
+
+> *A class should have only one reason to change.* — [Robert C. Martin](https://en.wikipedia.org/wiki/Robert_C._Martin)
+
+In simpler terms: **a class should do just one job**. When a class starts doing too many things at once, it becomes harder to test, harder to extend, and more fragile when you modify it.
+
+## A Class Doing Too Much
+
+Here’s a common anti-pattern: one class fetching data, processing it, saving it — and also handling multiple export formats:
+
+```py
+class InventoryHandler:
+    def fetch_data(self): ...
+    def process_data(self): ...
+    def save_data(self): ...
+
+    def export_csv(self): ...
+    def export_xlsx(self): ...
+
+    def export(self, format: str):
+        if format == "csv":
+            return self.export_csv()
+        elif format == "xlsx":
+            return self.export_xlsx()
+
+    def run(self):
+        self.fetch_data()
+        self.process_data()
+        self.save_data()
+
+```
+
+At first glance it may look fine — everything is grouped in one place. But the moment you want to add a new export format (like PDF), you’re forced to change this class. Even though the data fetching logic didn’t change, this class still has to be modified. That means **multiple reasons to change**, which violates SRP.
+
+## Refactoring with SRP in Mind
+
+To apply SRP, we separate the responsibilities:
+
+* One class deals with data retrieval and persistence.
+* Another class handles report formatting and exporting.
+
+```py
+class InventoryHandler:
+    def fetch_data(self): ...
+    def process_data(self): ...
+    def save_data(self): ...
+
+    def run(self):
+        self.fetch_data()
+        self.process_data()
+        self.save_data()
+
+class ReportHandler:
+    def __init__(self, data) -> None:
+        self.data = data
+
+    def export_csv(self): ...
+    def export_xlsx(self): ...
+
+    def export(self, format: str):
+        if format == "csv":
+            return self.export_csv()
+        elif format == "xlsx":
+            return self.export_xlsx()
+
+```
+
+Now, if you want to add `export_pdf()` one day, you only modify **ReportHandler** — not the business logic in `InventoryHandler`. Each class has a **single reason to change**, which is exactly what SRP aims for.
+
+Single Responsibility Principle is often misunderstood as “a class should do very little.” In reality, it simply means **a class should have only *one* reason to change**. By separating concerns, your code becomes easier to modify, easier to test, and much more maintainable in the long term.
+
+In the next post, I’ll build on top of this design to show how SRP naturally leads into the second SOLID principle — the Open/Closed Principle.
