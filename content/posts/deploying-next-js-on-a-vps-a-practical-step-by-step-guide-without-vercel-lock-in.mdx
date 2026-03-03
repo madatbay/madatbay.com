@@ -1,0 +1,242 @@
+---
+title: >-
+  Deploying Next.js on a VPS: A Practical Step-by-Step Guide Without Vercel
+  Lock-In
+excerpt: >-
+  A practical guide to deploying your Next.js app on a VPS, covering server
+  setup, process management, NGINX proxy configuration, and SSL installation.
+date: 2026-03-03
+updatedAt: 2026-03-03
+---
+![](/content/posts/deploying-next-js-on-a-vps-a-practical-step-by-step-guide-without-vercel-lock-in/deploy-nextjs-cover.png)
+
+I often see people saying that Next.js “locks you into Vercel.” That’s simply not true. You can deploy a Next.js app to your own VPS in just a few minutes.
+
+However, before going down the VPS route, there are a few important things to understand.
+
+[Vercel](https://vercel.org/) provides a lot of built-in infrastructure out of the box — things like image optimization, edge functions, and automatic scaling. When you deploy to your own VPS, you’re not losing Next.js features — but you *are* taking responsibility for the infrastructure that Vercel normally manages for you.
+
+Let’s quickly look at what that means.
+
+## What You Don’t Get Automatically on a VPS
+
+When deploying on Vercel, many services are handled for you in exchange for cost. On a VPS, you need to set these up yourself:
+
+### ❌ No Automatic Image Optimization CDN Layer
+
+Next.js image optimization still works, but you don’t get a globally distributed CDN by default.
+
+### ❌ No Built-in Edge Functions Runtime
+
+Edge Functions won’t automatically run at the edge. You’ll need a separate edge provider if you want that behavior.
+
+### ❌ No Automatic ISR Cache Persistence
+
+Incremental Static Regeneration cache won’t persist across multiple instances unless you configure shared storage.
+
+### ❌ No Automatic Serverless Scaling
+
+Your VPS won’t scale automatically with traffic. You are responsible for process management and scaling.
+
+That’s the trade-off: more control, more responsibility.
+
+Now, let’s deploy.
+
+## Server Assumptions
+
+In this guide, I’ll assume:
+
+* You have a VPS with a **Debian-based OS** (Ubuntu works fine).
+* Node.js is already installed.
+* You have a domain pointing to your server.
+
+If you’re using a different OS, just adapt the commands accordingly.
+
+## 1. SSH into Your Server
+
+```sh
+ssh user@yourserver.com
+```
+
+## 2. Update and Upgrade Your Server
+
+Always start by updating your system:
+
+```sh
+apt update -y && apt upgrade -y
+```
+
+Your server is now ready.
+
+## 3. Clone Your Project
+
+Next, pull your project into the server. In this example, I’m using GitHub and deploying into `/var/www/example-project`.
+
+```sh
+mkdir -p /var/www
+git clone https://github.com/madatbay/example-project.git /var/www/example-project
+```
+
+Now your code lives on the server.
+
+## 4. Install PM2 (Process Manager)
+
+Since Next.js runs as a Node.js server, we need a way to keep it running in the background — even if the terminal closes or the server restarts.
+
+### What is PM2?
+
+[PM2](https://pm2.keymetrics.io/) is a production process manager for Node.js applications. It keeps your app alive and automatically restarts it if it crashes.
+
+Install PM2 globally:
+
+```sh
+npm install pm2@latest -g
+```
+
+## 5. Install Dependencies and Build
+
+Move into your project directory:
+
+```sh
+cd /var/www/example-project
+```
+
+Install dependencies:
+
+```sh
+npm install
+```
+
+Build your Next.js app:
+
+```sh
+npm run build
+```
+
+## 6. Start Next.js with PM2
+
+Now we’ll start the app using PM2.
+
+Basic format:
+
+```sh
+pm2 start npm --name <app_name> -- start --port <port>
+```
+
+In our example:
+
+```sh
+pm2 start npm --name next-app -- start --port 3000
+```
+
+Your Next.js app is now running on port **3000** 🎉
+
+## 7. Configure NGINX as Reverse Proxy
+
+We’ll use [NGINX](https://nginx.org/) to:
+
+* Connect your domain
+* Forward traffic to port 3000
+* Prepare for SSL
+
+### Install NGINX
+
+```sh
+apt install nginx -y
+```
+
+### Create NGINX Config
+
+Navigate to:
+
+```sh
+cd /etc/nginx/sites-available/
+vim app.conf
+```
+
+Add this configuration:
+
+```ini
+server {
+    server_name <app_domain>;
+
+    client_max_body_size 20M;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_cache_bypass $http_upgrade;
+        proxy_buffering off;
+    }
+}
+```
+
+This tells NGINX to forward all traffic from your domain to your Next.js app running on port 3000.
+
+### Enable the Configuration
+
+Create a symlink:
+
+```sh
+ln -s /etc/nginx/sites-available/app.conf /etc/nginx/sites-enabled/
+```
+
+Validate config:
+
+```sh
+nginx -t
+```
+
+Restart NGINX:
+
+```sh
+service nginx restart
+```
+
+Your app should now be accessible via your domain (without SSL yet).
+
+## 8. Enable SSL with Certbot 🔐
+
+Let’s secure the site with HTTPS.
+
+### Install Certbot
+
+```sh
+apt install certbot python3-certbot-nginx -y
+```
+
+### Run Certbot
+
+```sh
+certbot --nginx
+```
+
+Follow the prompts to generate and install your SSL certificate.
+
+Finally, restart NGINX:
+
+```sh
+service nginx restart
+```
+
+Now your app is live with HTTPS.
+
+## Final Thoughts
+
+Yes, deploying to a VPS requires a few more steps compared to Vercel.
+
+But you gain:
+
+* Full infrastructure control
+* Lower cost at scale
+* No vendor lock-in
+
+And once you’ve done it once, it becomes a simple repeatable process.
+
+That’s it — your Next.js app is now running on your own VPS 🚀

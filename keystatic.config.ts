@@ -16,7 +16,15 @@ export default config({
           label: "Updated At",
           defaultValue: { kind: "today" },
         }),
-        content: fields.mdx({ label: "Content" }),
+        content: fields.mdx({
+          label: "Content",
+          options: {
+            image: {
+              directory: "public/content/posts",
+              publicPath: "/content/posts",
+            },
+          },
+        }),
       },
     }),
     caseStudies: collection({
