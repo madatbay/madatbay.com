@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const publications = await getCollectionEntries("publications", 4)
+  const publications = await getCollectionEntries("publications")
 
   return (
     <div className="space-y-8">

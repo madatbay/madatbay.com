@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const posts = await getCollectionEntries("posts", 4)
+  const posts = await getCollectionEntries("posts")
 
   return (
     <div className="space-y-8">

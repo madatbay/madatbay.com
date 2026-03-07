@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const caseStudies = await getCollectionEntries("caseStudies", 4)
+  const caseStudies = await getCollectionEntries("caseStudies")
 
   return (
     <div className="space-y-8">
